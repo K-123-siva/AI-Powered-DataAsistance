@@ -8,7 +8,7 @@ import streamlit as st
 import pandas as pd
 
 # Define your Hugging Face API key here
-apikey = ""
+apikey = "HUGGINGFACE_TOKEN_REMOVED"
 
 # Login with your Hugging Face API key
 login(token=apikey)
