@@ -287,7 +287,12 @@ if st.session_state.clicked[1]:
             }
         }
 
-        if st.button("Train Model"):
+        if "trained_model" not in st.session_state:
+            st.session_state.trained_model = None
+            st.session_state.model_filename = None
+
+
+        if st.button("🚀 Train Model"):
             if target_col not in df.columns:
                 st.error(f"Target column '{target_col}' does not exist in the dataset.")
             elif not set(feature_cols).issubset(df.columns):
@@ -355,3 +360,27 @@ if st.session_state.clicked[1]:
                 comparison_df = pd.DataFrame.from_dict(comparison_results, orient='index', columns=['RMSE']).sort_values(by="RMSE")
                 st.write(comparison_df)
                 st.bar_chart(comparison_df)
+                
+            # Save the model
+            model_filename = f"trained_model_{model_choice.replace(' ', '_')}.pkl"
+            with open(model_filename, 'wb') as model_file:
+                pickle.dump(model, model_file)
+
+            # Provide model download link
+            st.download_button(
+                label="📥 Download Trained Model",
+                data=open(model_filename, "rb").read(),
+                file_name=model_filename,
+                mime="application/octet-stream"
+            )
+
+            # Provide predictions download link
+            predictions_df = pd.DataFrame({"Actual": y_test, "Predicted": predictions})
+            csv_data = predictions_df.to_csv(index=False).encode('utf-8')
+
+            st.download_button(
+                label="📥 Download Predictions",
+                data=csv_data,
+                file_name="predictions.csv",
+                mime="text/csv"
+            )

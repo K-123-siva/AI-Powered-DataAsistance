@@ -64,7 +64,7 @@ with st.sidebar:
     
     st.divider()
     
-    st.caption("<p style ='text-align:center'> made with ❤️ by Team Avengers</p>", unsafe_allow_html=True)
+    st.caption("<p style ='text-align:center'></p>", unsafe_allow_html=True)
 
 # Initialize the key in session state
 if 'clicked' not in st.session_state:
